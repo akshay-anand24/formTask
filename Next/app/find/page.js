@@ -17,16 +17,17 @@ const page = () => {
 
 
       let api=async(data)=>{
-        console.log(data)
-        let result=await fetch('http://127.0.0.1:8000/find',{
-           method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+        let result=await fetch('/api/find',{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
         })
+        console.log(data)
         result=await result.json()
         result=JSON.stringify(result)
+        console.log(result)
         setValue(result)
         rid.value=null
         }
