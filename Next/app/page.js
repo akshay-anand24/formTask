@@ -4,12 +4,24 @@ import Link from 'next/link'
 import styles from './page.module.css'
 
 
-import Button from '@mui/material/Button'
+// import Button from '@mui/material/Button'
 import { useForm } from 'react-hook-form';
 
 import style from './styl.module.css'
-import {TextField,FormControl,InputLabel,Select,MenuItem} from '@mui/material'
+// import {TextField,FormControl,InputLabel,Select,MenuItem} from '@mui/material'
 import { useEffect, useState } from 'react';
+import Input from '@/components/ui/input';
+import {Button} from '../components/ui/button';
+import {
+  Select,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+} from '../components/ui/select';
 
 
 
@@ -23,7 +35,8 @@ const Index = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
+    setValue,
   } = useForm();
 
 
@@ -58,122 +71,148 @@ nw.scrollIntoView({behavior:'smooth'})
 
   return (
 <>
-<h1 className={style.h1}>Signup Form</h1>
-<h3 style={{float:'right'}}><Link href={'/find'}>Find Status</Link></h3>
-<form className={style.form} onSubmit={handleSubmit((data) => api(data))}>
+<div className={ ' text-4xl text-center m-10'}>Signup Form</div>
+<h3 style={{float:'right'}} ><Link href={'/find'}>Find Status</Link></h3>
+<form className={style.form} onSubmit={handleSubmit((data) => {api(data)})}>
 
 
-<TextField
+<Input
   id="mobile"
-  label="Mobile"
-  sx={{width:'100%',mt:5,}}
+  placeholder="Mobile"
   {...register('mobile', { pattern: /^[0-9]+$/ ,required:true,minLength:10})}
 />
 {errors.mobile && <p> Invalid </p>}
-<TextField
+<Input
   id=""
-  label="Email"
-  sx={{width:'100%',mt:5,}}
+  placeholder="Email"
+  className='mt-7'
   {...register('email',{pattern:/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/})}
   
 />
 {errors.email && <p> Invalid </p>}
   
-<TextField
+<Input
   id=""
-  label="First Name"
-  sx={{width:'100%',mt:5,}}
+  placeholder="First Name"
+  className='mt-7'
   {...register('fname',{required:true})}
   
 />
-<TextField
+<Input
   id=""
-  label="Last Name"
-  sx={{width:'100%',mt:5,}}
+  placeholder="Last Name"
+  className='mt-7'
+
   {...register('lname',{required:true})}
   
 />
-<FormControl sx={{ mt:5 , minWidth: '100%' }}>
-        <InputLabel id="demo-simple-select-autowidth-label">Gender</InputLabel>
-        <Select
-          labelId="demo-simple-select-autowidth-label"
-          label='Gender'
-          id="demo-simple-select-autowidth"
-          autoWidth
-          {...register('gender',{required:true})}
-        >
-         
-          <MenuItem value='M'>Male</MenuItem>
-          <MenuItem value='F'>Female</MenuItem>
-          <MenuItem value='O'>Other</MenuItem>
-        </Select>
-      </FormControl>
 
-      <TextField
+
+<Select
+         {...register('gender',{required:true})}
+         onValueChange={(e)=>{setValue("gender",e)}}
+      >
+      <SelectTrigger className="w-[100%] mt-7">
+        <SelectValue placeholder="Select a gender" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>Gender</SelectLabel>
+          <SelectItem value="M">Male</SelectItem>
+          <SelectItem value="F">Female</SelectItem>
+          <SelectItem value="O">Other</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+
+      <Input
   id=""
-  label="Pan Card"
-  sx={{width:'100%',mt:5,}}
-  {...register('pancard',{minLength:10,maxLength:10,required:false})}
+  placeholder="Pan Card"
+  className='mt-7'
+
+  {...register('pancard',{minLength:10,maxLength:10,required:true})}
   
 />
-      <TextField
+      <Input
       type='date'
   id=""
-  helperText='DoB'
-  sx={{width:'100%',mt:5,}}
+  placeholder='DoB'
+  className='mt-7'
+
   name="dob"
-  {...register('dob')}
+  {...register('dob',{required:true})}
 
   
   
   
 />
 
-<TextField
+<Input
   id=""
-  label="PinCode"
-  sx={{width:'100%',mt:5,}}
+  placeholder="PinCode"
+  className='mt-7'
+
   {...register('pincode',{pattern: /^[0-9]+$/,required:true,minLength:6})}
   
 />
 {errors.pincode && <p> Invalid </p>}
 
-<FormControl sx={{ mt:5 , minWidth: '100%' }}>
-        <InputLabel id="demo-simple-select-autowidth-label">Profession</InputLabel>
-        <Select
-          labelId="demo-simple-select-autowidth-label"
-          id="demo-simple-select-autowidth"
-          // value={age}
-          // onChange={}
-          label='profession'
-          autoWidth
-          {...register('profession',{required:true})}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={'salaried'}>Salaried</MenuItem>
-          <MenuItem value={'Self Employed'}>Self Employed</MenuItem>
-          <MenuItem value={'Student'}>Student</MenuItem>
-          <MenuItem value={'Retired'}>Retired</MenuItem>
-          <MenuItem value={'Housewife'}>HouseWife</MenuItem>
-         
-        </Select>
-      </FormControl>
-<TextField
+
+<Select
+         {...register('profession',{required:true})}
+         onValueChange={(e)=>{setValue("profession",e)}}
+      >
+      <SelectTrigger className="w-[100%] mt-7">
+        <SelectValue placeholder="Select a Profession" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectItem value="salaried">salaried</SelectItem>
+          <SelectItem value="self employed">Self Employed</SelectItem>
+          <SelectItem value="student">student</SelectItem>
+          <SelectItem value="retired">Retired</SelectItem>
+          <SelectItem value="housewife">Housewife</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+
+
+<Input
   id=""
-  label="Income"
-  sx={{width:'100%',mt:5,}}
+  placeholder="Income"
+  className='mt-7'
+
   {...register('income',{pattern: /^[0-9]+$/,required:true})}
   
 />
-<TextField
+<Input
   id=""
-  label="IMEI"
-  sx={{width:'100%',mt:5,}}
+  placeholder="IMEI"
+  className='mt-7'
+
   {...register('imei',{required:true})}
-  
 />
+
+
+
+<Select
+         {...register('company',{required:true})}
+         onValueChange={(e)=>{setValue("company",e)}}
+      >
+      <SelectTrigger className="w-[100%] mt-7">
+        <SelectValue placeholder="Select a company" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectItem value="krazybee">krazybee</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+
+
+
+
+
 {/* <TextField
   id=""
   label="Referende Id"
@@ -181,7 +220,7 @@ nw.scrollIntoView({behavior:'smooth'})
   {...register('rid',{required:true,minLength:12,maxLength:16})}
   
 /> */}
-<FormControl sx={{ mt:5 , minWidth: '100%' }}>
+{/* <FormControl sx={{ mt:5 , minWidth: '100%' }}>
         <InputLabel id="demo-simple-select-autowidth-label">Company</InputLabel>
         <Select
           labelId="demo-simple-select-autowidth-label"
@@ -198,7 +237,7 @@ nw.scrollIntoView({behavior:'smooth'})
           <MenuItem value={'kreditbee'}>KreditBee</MenuItem>
          
         </Select>
-      </FormControl>
+      </FormControl> */}
       {errors.company&&<p>{errors.company.message}</p>}
 
       {/* <TextField
@@ -224,7 +263,7 @@ nw.scrollIntoView({behavior:'smooth'})
 /> */}
 
 
-<Button sx={{mt:5,mb:5}} variant='contained' type='submit'> Submit</Button>
+<Button variant='outline' className='my-7 bg-zinc-950 text-white hover:bg-zinc-700 hover:text-white active:bg-red-600'  type='submit'> Submit</Button>
 
 </form>
 {rid?<><h1 id='nw' style={{textAlign:'center',color:'green'}}>Your Reference ID is: {rid}</h1><div>Save the Reference ID for future reference</div></>:null}
