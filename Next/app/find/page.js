@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import style from './style.module.css'
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
 
 
 
@@ -17,18 +18,13 @@ const page = () => {
 
 
       let api=async(data)=>{
-        let result=await fetch('/api/find',{
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        })
-        console.log(data)
-        result=await result.json()
-        result=JSON.stringify(result)
-        console.log(result)
-        setValue(result)
+       const result=await axios.post('https://lms29api.buynsta.com/main/eligible/kreditbee',{
+        referenceId:data.rid
+       })
+      
+        const res=result.data
+        console.log(res)
+        setValue(JSON.stringify(res))
         rid.value=null
         }
 

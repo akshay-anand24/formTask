@@ -72,7 +72,7 @@ const Index = () => {
     };
 
 
-    const res = await axios.post("https://lms29api.buynsta.com/main/eligible/kreditbee", {
+    const res = await axios.put("https://lms29api.buynsta.com/main/eligible/kreditbee", {
       newdata,
     });
 
@@ -87,6 +87,36 @@ const path= res.data.referenceId
       }
 
       case "W001":{
+        setLoading(false)
+        router.push('/find/'+path)}
+        break;
+
+
+      case "R001":{
+        setLoading(false)
+        router.push('/find/'+path)}
+        break;
+      case "R002":{
+        setLoading(false)
+        router.push('/find/'+path)}
+        break;
+      case "R003":{
+        setLoading(false)
+        router.push('/find/'+path)}
+        break;
+      case "R004":{
+        setLoading(false)
+        router.push('/find/'+path)}
+        break;
+      case "R005":{
+        setLoading(false)
+        router.push('/find/'+path)}
+        break;
+      case "R006":{
+        setLoading(false)
+        router.push('/find/'+path)}
+        break;
+      case "R007":{
         setLoading(false)
         router.push('/find/'+path)}
         break;

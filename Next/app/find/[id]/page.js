@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react'
 const Id = ({params}) => {
     let [status,setStatus]=useState({})
     const statusHandler=async ()=>{
-      let res= await axios.get(" https://lms29api.buynsta.com/main/eligible/kreditbee",{
+      let res= await axios.post(" https://lms29api.buynsta.com/main/eligible/kreditbee",{
         referenceId:params.id
       })
       let data=res.data
