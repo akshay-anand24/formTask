@@ -16,7 +16,7 @@ const Id = ({params}) => {
       setStatus(res.data)
     
 
-      console.log(status)
+      console.log(params)
     }
 
     useEffect(()=>{

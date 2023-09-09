@@ -143,7 +143,7 @@ const Index = () => {
         }
       }
     } else {
-      router.push("/connect");
+      router.push("/find/"+path);
       setLoading(false);
     }
   };
