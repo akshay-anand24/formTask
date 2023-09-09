@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import axios from 'axios';
+import axios from "axios";
 import ClipLoader from "react-spinners/ClipLoader";
 import styles from "./page.module.css";
-import { createContext } from 'react';
+import { createContext } from "react";
 
 // import Button from '@mui/material/Button'
 import { useForm, Controller } from "react-hook-form";
@@ -29,12 +29,11 @@ import Conn from "./connect/page";
 
 const connContext = createContext();
 
-
 const Index = () => {
   let [rid, setRId] = useState("");
   let [prof, setProf] = useState("");
-  let [loading, setLoading] = useState(false)
-  const router=useRouter()
+  let [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const {
     control,
@@ -62,7 +61,7 @@ const Index = () => {
   // };
 
   const handleSubmitHandler = async (data) => {
-    setLoading(true)
+    setLoading(true);
     let newdata = {
       ...data,
       imei: "website",
@@ -71,62 +70,82 @@ const Index = () => {
       campaign: "",
     };
 
-
-    const res = await axios.put("https://lms29api.buynsta.com/main/eligible/kreditbee", {
-      newdata,
-    });
-
-const path= res.data.referenceId
-  console.log(res)
-    switch (res.data.statusCode) {
-      case "A001":{
-        setLoading(false)
-        router.push('/find/'+path)
-        break;
-         
+    const res = await axios.put(
+      "https://lms29api.buynsta.com/main/eligible/kreditbee",
+      {
+        newdata,
       }
+    );
 
-      case "W001":{
-        setLoading(false)
-        router.push('/find/'+path)}
-        break;
+    const path = res.data.referenceId;
+    console.log(res);
+    if (res.data.code === 200) {
+      switch (res.data.statusCode) {
+        case "A001": {
+          setLoading(false);
+          router.push("/find/" + path);
+          break;
+        }
 
+        case "W001":
+          {
+            setLoading(false);
+            router.push("/find/" + path);
+          }
+          break;
 
-      case "R001":{
-        setLoading(false)
-        router.push('/find/'+path)}
-        break;
-      case "R002":{
-        setLoading(false)
-        router.push('/find/'+path)}
-        break;
-      case "R003":{
-        setLoading(false)
-        router.push('/find/'+path)}
-        break;
-      case "R004":{
-        setLoading(false)
-        router.push('/find/'+path)}
-        break;
-      case "R005":{
-        setLoading(false)
-        router.push('/find/'+path)}
-        break;
-      case "R006":{
-        setLoading(false)
-        router.push('/find/'+path)}
-        break;
-      case "R007":{
-        setLoading(false)
-        router.push('/find/'+path)}
-        break;
+        case "R001":
+          {
+            setLoading(false);
+            router.push("/find/" + path);
+          }
+          break;
+        case "R002":
+          {
+            setLoading(false);
+            router.push("/find/" + path);
+          }
+          break;
+        case "R003":
+          {
+            setLoading(false);
+            router.push("/find/" + path);
+          }
+          break;
+        case "R004":
+          {
+            setLoading(false);
+            router.push("/find/" + path);
+          }
+          break;
+        case "R005":
+          {
+            setLoading(false);
+            router.push("/find/" + path);
+          }
+          break;
+        case "R006":
+          {
+            setLoading(false);
+            router.push("/find/" + path);
+          }
+          break;
+        case "R007":
+          {
+            setLoading(false);
+            router.push("/find/" + path);
+          }
+          break;
 
-      default:{
-    setLoading(false)
-    router.push('/connect')
+        default: {
+          setLoading(false);
+          router.push("/connect");
+        }
       }
+    } else {
+      router.push("/connect");
+      setLoading(false);
     }
-
   };
 
   useEffect(() => {
@@ -136,25 +155,38 @@ const path= res.data.referenceId
 
   return (
     <>
-
-
-
-{loading?<div
-        style={{display:'block', position:'fixed',backgroundColor:'black',opacity:.3,width:'100%',height:'100%', transform:'translate(-50%,-50%)',left:'50%',top:'50%'}}
->
-<ClipLoader
-        color={'000010'}
-        loading={loading}
-        cssOverride={{opacity:1,color:'white',position:'fixed',zIndex:2, transform:'translate(-50%,-50%)',left:'43%',top:'43%',}}
-        size={150}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-      />
-
-</div>:null}
-
-
-
+      {loading ? (
+        <div
+          style={{
+            display: "block",
+            position: "fixed",
+            backgroundColor: "black",
+            opacity: 0.3,
+            width: "100%",
+            height: "100%",
+            transform: "translate(-50%,-50%)",
+            left: "50%",
+            top: "50%",
+          }}
+        >
+          <ClipLoader
+            color={"000010"}
+            loading={loading}
+            cssOverride={{
+              opacity: 1,
+              color: "white",
+              position: "fixed",
+              zIndex: 2,
+              transform: "translate(-50%,-50%)",
+              left: "43%",
+              top: "43%",
+            }}
+            size={150}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        </div>
+      ) : null}
 
       <div className={" text-4xl text-center m-10"}>Signup Form</div>
       <h3 style={{ float: "right" }}>
@@ -285,7 +317,7 @@ const path= res.data.referenceId
           placeholder="Income"
           className="mt-7"
           {...register("income", { pattern: /^[0-9]+$/, required: true })}
-        /> 
+        />
         {/* <Input
           id=""
           placeholder="IMEI"
@@ -390,4 +422,3 @@ const path= res.data.referenceId
 };
 
 export default Index;
-
