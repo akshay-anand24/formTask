@@ -25,7 +25,7 @@ import {
   SelectSeparator,
 } from "../components/ui/select";
 import { useRouter } from "next/navigation";
-import Conn from "./connect/page";
+import Conn from "./error/page";
 
 const connContext = createContext();
 
@@ -39,7 +39,7 @@ const Index = () => {
     control,
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors ,isDirty, isValid},
     setValue,
     reset,
   } = useForm();
@@ -139,11 +139,11 @@ const Index = () => {
 
         default: {
           setLoading(false);
-          router.push("/connect");
+          router.push("/error");
         }
       }
     } else {
-      router.push("/find/"+path);
+      router.push('/error');
       setLoading(false);
     }
   };
@@ -189,10 +189,8 @@ const Index = () => {
       ) : null}
 
       <div className={" text-4xl text-center m-10"}>Signup Form</div>
-      <h3 style={{ float: "right" }}>
-        <Link href={"/find"}>Find Status</Link>
-      </h3>
-      <form className={style.form} onSubmit={handleSubmit(handleSubmitHandler)}>
+    
+      <form className='m-auto w-11/12 sm:w-10/12 md:w-8/12 lg:w-6/12' onSubmit={handleSubmit(handleSubmitHandler)}>
         <Input
           id="mobile"
           placeholder="Mobile"
@@ -402,8 +400,10 @@ const Index = () => {
 
         <Button
           variant="outline"
-          className="my-7 bg-zinc-950 text-white hover:bg-zinc-700 hover:text-white active:bg-red-600"
+          className="my-7 bg-zinc-950 text-white hover:bg-zinc-700 hover:text-white active:bg-red-600 block
+          w-full mx-auto   md:w-6/12  lg:w-auto lg:mx-0 "
           type="submit"
+          disabled={!isDirty || !isValid}
         >
           {" "}
           Submit
