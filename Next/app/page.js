@@ -13,6 +13,8 @@ import style from "./styl.module.css";
 import { useEffect, useState } from "react";
 import Input from "@/components/ui/input";
 import { Button } from "../components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox"
+
 import { HiOutlineIdentification } from "react-icons/hi2";
 import { GiArchiveRegister } from "react-icons/gi";
 import { AiOutlineArrowRight } from "react-icons/ai";
@@ -106,6 +108,13 @@ const intro=()=>{
           className="mt-7"
           {...register("lname", { required: true })}
         />
+        <br /><br />
+        <Checkbox  {...register("notification",{required:true})} onClick={(e)=>{  setCheck(!check),setValue('notification',!check)}} value={check} onCheckedChange={(e)=>{console.log(e)}}/> <span className="text-md">Receive offers and notifications on WhatsApp</span>
+        <br /><br />
+         <span className="text-sm">We'll only send Welcome or regulatory messages. You may mute/unmute them later on your Stashfin App!</span>
+      
+        <br />
+         <span className="text-sm">*The receipt and provision of such information is based upon your earlier acceptance of our privacy policy</span>
       </div>
     );
   };
@@ -237,6 +246,7 @@ const intro=()=>{
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [page, setPage] = useState(0);
+  const [check,setCheck]=useState(false)
 
   const {
     control,
@@ -244,6 +254,7 @@ const intro=()=>{
     handleSubmit,
     formState: { errors, isDirty, isValid },
     setValue,
+    getValues,
     reset,
   } = useForm();
 
@@ -292,6 +303,7 @@ const intro=()=>{
         campaign: "",
         key1: "",
         key2: "",
+        notification:newdata.notification
       },
       {
         headers: {
@@ -299,7 +311,7 @@ const intro=()=>{
         },
       }
     );
-    console.log(res);
+    console.log(res,newdata);
     const path = res.data.model ? res.data.model.referenceId : "";
     if (res.data.code === "200") {
       switch (res.data.model.statusCode) {
@@ -313,6 +325,7 @@ const intro=()=>{
           {
             setLoading(false);
             router.push("/find/" + path);
+            console.log(newdata)
           }
           break;
 
@@ -380,65 +393,53 @@ const intro=()=>{
     let comp=document.getElementsByClassName('comp')
     let form= document.getElementById('form')
     if(page===1){
-      setTimeout(()=>{form.style.transform='scale(1)'
-      comp[0].style.display='block'
-      comp[1].style.display='none'
-      comp[2].style.display='none'
-    },1000)
-       
+     
+    comp[0].style.display='block'
+    comp[1].style.display='none'
+    comp[2].style.display='none'
     
      
-      form.style.transform='scale(0)'
     }
     else if(page===2){
-      setTimeout(()=>{form.style.transform='scale(1)'
-      comp[0].style.display='none'
-      comp[1].style.display='block'
-      comp[2].style.display='none'
-    },1000)
-       
-    
      
-      form.style.transform='scale(0)'
+       
+    comp[0].style.display='none'
+    comp[1].style.display='block'
+    comp[2].style.display='none'
+     
+      form.style.transform='scale(1)'
       
    
     }
     else if(page===3){
      
-      setTimeout(()=>{form.style.transform='scale(1)'
-   
-      comp[0].style.display='none'
-      comp[1].style.display='none'
-      comp[2].style.display='block'
-    },1000)
-       
     
+       
+    comp[0].style.display='none'
+    comp[1].style.display='none'
+    comp[2].style.display='block'
      
-      form.style.transform='scale(0)'
+      form.style.transform='scale(1)'
       
 
     }
     else {
-      setTimeout(()=>{form.style.transform='scale(1)'
-   
-      comp[0].style.display='none'
-      comp[1].style.display='none'
-      comp[2].style.display='none'
-    },1000)
        
-    
+    comp[0].style.display='none'
+    comp[1].style.display='none'
+    comp[2].style.display='none'
      
-      form.style.transform='scale(0)'
+      form.style.transform='scale(1)'
      
     }
     
-  }, [page]);
+  }, [page,check]);
 
   
 
 
   return (
-    <div style={{backgroundColor:'#D7E8D8',minHeight:'100vh',padding:0,margin:0,border:'.1px solid black'}}>
+    <div style={{backgroundColor:'#white',minHeight:'100vh',padding:0,margin:0,border:'.1px solid black'}}>
       {loading ? (
         <div
           style={{
@@ -475,7 +476,7 @@ const intro=()=>{
 
       
 
-      <form id='form' style={{boxShadow:"0px 0px 7px 2px gray",padding:'50px 20px',border:'1px solid black',backgroundColor:'#ffffff',margin:'  100px auto ',transitionDuration:'1s'}}
+      <form id='form' style={{padding:'50px 20px',backgroundColor:'#ffffff',margin:'  100px auto ',transitionDuration:'1s'}}
         className="m-auto w-11/12 sm:w-10/12 md:w-8/12 lg:w-6/12 "
         onSubmit={handleSubmit(handleSubmitHandler)}
       >
