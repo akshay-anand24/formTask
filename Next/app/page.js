@@ -3,7 +3,7 @@
 import axios from "axios";
 import ClipLoader from "react-spinners/ClipLoader";
 import styles from "./page.module.css";
-import { createContext } from "react";
+// import { createContext } from "react";
 
 import { v4 } from "uuid";
 import { useForm, Controller } from "react-hook-form";
@@ -38,12 +38,16 @@ import AOS from 'aos';
 import 'aos/dist/aos.css'; // You can also use <link> for styles
 import { duration } from "@mui/material";
 AOS.init({duration:2000});
+import Context, { LoadContext } from '@/context/context';
+import { Kreditbee } from "./function/function";
 
-const connContext = createContext();
+
 let rid = v4().split("-");
 rid = rid[0] + rid[1] + rid[2] + rid[3];
 
 const Index = () => {
+
+const {loading,setLoading}=LoadContext()
 
 const intro=()=>{
   return(
@@ -243,7 +247,6 @@ const intro=()=>{
   };
 
   const [prof, setProf] = useState("");
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [page, setPage] = useState(0);
   const [check,setCheck]=useState(false)
@@ -276,115 +279,8 @@ const intro=()=>{
 
   const handleSubmitHandler = async (data) => {
     setLoading(true);
-    let newdata = {
-      ...data,
-      imei: "website",
-      key1: "",
-      key2: "",
-      campaign: "",
-    };
-
-    const res = await axios.put(
-      "https://lms29api.buynsta.com/main/eligible/kreditbee",
-      {
-        mobile: newdata.mobile,
-        email: newdata.email,
-        firstname: newdata.fname,
-        lastname: newdata.lname,
-        gender: newdata.gender,
-        pan: newdata.pancard,
-        dob: "2019-01-05",
-        pincode: newdata.pincode,
-        profession: newdata.profession,
-        salary: newdata.income,
-        imei: "website",
-        referenceId: rid,
-        company: newdata.company,
-        campaign: "",
-        key1: "",
-        key2: "",
-        notification:newdata.notification
-      },
-      {
-        headers: {
-          Authorization: " Basic " + process.env.NEXT_PUBLIC_AUTHORIZATION_KEY,
-        },
-      }
-    );
-    console.log(res,newdata);
-    const path = res.data.model ? res.data.model.referenceId : "";
-    if (res.data.code === "200") {
-      switch (res.data.model.statusCode) {
-        case "A001": {
-          setLoading(false);
-          router.push("/find/" + path);
-          break;
-        }
-
-        case "W001":
-          {
-            setLoading(false);
-            router.push("/find/" + path);
-            console.log(newdata)
-          }
-          break;
-
-        case "R001":
-          {
-            setLoading(false);
-            router.push("/find/" + path);
-          }
-          break;
-        case "R002":
-          {
-            setLoading(false);
-            router.push("/find/" + path);
-          }
-          break;
-        case "R003":
-          {
-            setLoading(false);
-            router.push("/find/" + path);
-          }
-          break;
-        case "R004":
-          {
-            setLoading(false);
-            router.push("/find/" + path);
-          }
-          break;
-        case "R005":
-          {
-            setLoading(false);
-            router.push("/find/" + path);
-          }
-          break;
-        case "R006":
-          {
-            setLoading(false);
-            router.push("/find/" + path);
-          }
-          break;
-        case "R007":
-          {
-            setLoading(false);
-            router.push("/find/" + path);
-          }
-          break;
-
-        default: {
-          setLoading(false);
-          let searchParams = new URLSearchParams(res.data);
-          searchParams = searchParams.toString();
-          router.push("/error" + "?" + searchParams);
-        }
-      }
-    } else {
-      let searchParams = new URLSearchParams(res.data);
-      searchParams = searchParams.toString();
-      router.push("/error" + "?" + searchParams);
-      setLoading(false);
-    }
+    Kreditbee(data,router,setLoading)
+    
   };
 
   useEffect(() => {
@@ -491,9 +387,10 @@ const intro=()=>{
             className="my-7  hover:text-white active:bg-red-600 hover:bg-green-600
           w-full mx-0   md:w-6/12  lg:w-auto lg:mx-0 
           inline-block p-2 m-2 text-center bg-green-700 text-white rounded cursor-pointer transition duration-300 ease-in-out transform hover:scale-105 active:scale-100 "
-            disabled={!isDirty || !isValid}
+            disabled={!isDirty || !isValid||!check}
             
-          >
+            >
+            {console.log(getValues('notification'),check)}
             {" "}
             Submit
           </Button>
